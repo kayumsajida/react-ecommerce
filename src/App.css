@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+
+@theme {
+    --color-primary:#fcb800;
+    --color-secondary:#F04B23;
+    --color-primary-text-color:#222222;
+    --color-secondary-text-color:#666666;
+    --color-link-color:#0066CC;
+}
+body {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}

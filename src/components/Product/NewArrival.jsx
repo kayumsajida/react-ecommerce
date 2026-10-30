@@ -91,7 +91,14 @@ const NewArrival = () => {
     ]
   return (
     <>
-      
+      <section className="">
+        <div className="container mx-auto text-center mb-10 relative px-3 lg:px-0">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">New Arrival</h2>
+            <p className="text-gray-500 text-sm md:text-base">
+                Discover the latest styles straight off the runway, freshly added to keep your wardrobe on the cutting edge of fashion.
+            </p>
+        </div>
+      </section>
     </>
   );
 };

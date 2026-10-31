@@ -2,42 +2,63 @@ import { useEffect, useRef, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const NewArrival = () => { 
+const NewArrival = () => {
     const scrollRef = useRef();
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(true);
+    const [startX, setStartX] = useState(0);
+    const [isdragging, setIsDragging] = useState(false);
 
-const [canScrollLeft, setCanScrollLeft] = useState(false);
-const [canScrollRight, setCanScrollRight] = useState(true);
+    const updateScrollButton = () => {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        setCanScrollLeft(scrollLeft > 0);
+        setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
+    };
 
-const updateScrollButton = () => {
-	const {scrollLeft, scrollWidth, clientWidth} = scrollRef.current;
-	setCanScrollLeft(scrollLeft > 0);
-	setCanScrollRight(scrollLeft + clientWidth < scrollWidth);
-};
+    const handleMouseDown = (e) => {
+        setIsDragging(true);
+        setStartX(e.pageX - scrollRef.current.offsetLeft);
+        setCanScrollLeft(scrollRef.current.scrollLeft > 0);
+    }
+    const handleMouseMove = (e) => {
+        if (!isdragging) return;
+        const walk = e.pageX - startX;
+        scrollRef.current.scrollBy({
+            left: -walk,
+            behavior: "smooth",
+        });
+    }
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    }
+    const handleMouseUpLeave = () => {
+        setIsDragging(false);
+    }
 
-const scrollLeft = () => {
-	scrollRef.current.scrollBy({
-		left:-300,
-		behavior: "smooth",
-	});
-};
+    const scrollLeft = () => {
+        scrollRef.current.scrollBy({
+            left: -300,
+            behavior: "smooth",
+        });
+    };
 
-const scrollRight = () => {
-	scrollRef.current.scrollBy({
-		left:300,
-		behavior: "smooth",
-	});
-};
+    const scrollRight = () => {
+        scrollRef.current.scrollBy({
+            left: 300,
+            behavior: "smooth",
+        });
+    };
 
-useEffect(() => {
-	const slider = scrollRef.current;
-	slider.addEventListener("scroll", updateScrollButton);
-	updateScrollButton();
-	
-	return () => {
-		slider.removeEventListener("scroll", updateScrollButton)
-	};
-	
-}, []);
+    useEffect(() => {
+        const slider = scrollRef.current;
+        slider.addEventListener("scroll", updateScrollButton);
+        updateScrollButton();
+
+        return () => {
+            slider.removeEventListener("scroll", updateScrollButton)
+        };
+
+    }, []);
 
     const newArrivalProducts = [
         {
@@ -128,7 +149,7 @@ useEffect(() => {
                 },
             ]
         },
-    ];    
+    ];
 
     return (
         <>
@@ -140,39 +161,37 @@ useEffect(() => {
                     </p>
                     <div className="absolute right-0 flex space-x-2">
                         <button
-          onClick={scrollLeft}
-          disabled={!canScrollLeft}
-          className={`border border-gray-400 w-8 h-8 rounded-sm flex items-center justify-center cursor-pointer ${
-            !canScrollLeft ? "opacity-50 cursor-not-allowed bg-gray-300" : ""
-          }`}
-        >
+                            onClick={scrollLeft}
+                            disabled={!canScrollLeft}
+                            className={`border border-gray-400 w-8 h-8 rounded-sm flex items-center justify-center cursor-pointer ${!canScrollLeft ? "opacity-50 cursor-not-allowed bg-gray-300" : ""
+                                }`}
+                        >
                             <FaAngleLeft />
                         </button>
-                         <button
-          onClick={scrollRight}
-          disabled={!canScrollRight}
-          className={`border border-gray-400 w-8 h-8 rounded-sm flex items-center justify-center cursor-pointer ${
-            !canScrollRight ? "opacity-50 cursor-not-allowed bg-gray-300" : ""
-          }`}
-        >
+                        <button
+                            onClick={scrollRight}
+                            disabled={!canScrollRight}
+                            className={`border border-gray-400 w-8 h-8 rounded-sm flex items-center justify-center cursor-pointer ${!canScrollRight ? "opacity-50 cursor-not-allowed bg-gray-300" : ""
+                                }`}
+                        >
                             <FaAngleRight />
                         </button>
                     </div>
                 </div>
-                <div ref={scrollRef} className="container mx-auto px-3 flex space-x-6 overflow-x-auto relative">
+                <div ref={scrollRef} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUpLeave} className={`container mx-auto px-3 flex space-x-6 overflow-x-auto relative ${isdragging ? "cursor-grabbing" : "cursor-grab"} scrollbar-hide`}>
                     {
                         newArrivalProducts.map(product => (
                             <div key={product._id} className="min-w-[100%] sm:min-w-[50%] md:min-w-[50%] lg:min-w-[30%] relative">
-                                <img src={product.images[0]?.url} alt={product.images[0]?.altText || product.name} className="w-full h-[500px] object-cover rounded-lg" />
+                                <img src={product.images[0]?.url} alt={product.images[0]?.altText || product.name} className="w-full h-[500px] object-cover rounded-lg" draggable={false} />
                                 <div className="absolute bottom-0 left-0 right-0 backdrop-blur-md text-white p-4 rounded-b-lg">
                                     <Link to={`/product/${product._id}`} className="block">
                                         <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
                                         <p className="text-xl font-bold text-gray-800">${product.price.toFixed(2)}</p>
                                     </Link>
                                 </div>
-                                
+
                             </div>
-                        ))                    
+                        ))
                     }
                 </div>
             </section>

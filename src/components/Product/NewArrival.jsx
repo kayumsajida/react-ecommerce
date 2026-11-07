@@ -153,10 +153,10 @@ const NewArrival = () => {
 
     return (
         <>
-            <section className="">
+            <section className="pb-16 px-3 lg:px-0">
                 <div className="container mx-auto text-center mb-10 relative px-3 lg:px-0">
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">New Arrival</h2>
-                    <p className="text-gray-500 text-sm md:text-base">
+                    <p className="text-gray-500 mb-2 text-sm md:text-base">
                         Discover the latest styles straight off the runway, <br /> freshly added to keep your wardrobe on the cutting edge of fashion.
                     </p>
                     <div className="absolute right-0 flex space-x-2">
@@ -178,22 +178,22 @@ const NewArrival = () => {
                         </button>
                     </div>
                 </div>
-                <div ref={scrollRef} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUpLeave} className={`container mx-auto px-3 flex space-x-6 overflow-x-auto relative ${isdragging ? "cursor-grabbing" : "cursor-grab"} scrollbar-hide`}>
-                    {
-                        newArrivalProducts.map(product => (
-                            <div key={product._id} className="min-w-[100%] sm:min-w-[50%] md:min-w-[50%] lg:min-w-[30%] relative">
-                                <img src={product.images[0]?.url} alt={product.images[0]?.altText || product.name} className="w-full h-[500px] object-cover rounded-lg" draggable={false} />
-                                <div className="absolute bottom-0 left-0 right-0 backdrop-blur-md text-white p-4 rounded-b-lg">
-                                    <Link to={`/product/${product._id}`} className="block">
-                                        <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
-                                        <p className="text-xl font-bold text-gray-800">${product.price.toFixed(2)}</p>
-                                    </Link>
-                                </div>
+                <div ref={scrollRef} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUpLeave} className={`container mx-auto flex space-x-6 top-3 overflow-x-hidden relative ${isdragging ? "cursor-grabbing" : "cursor-grab"} scrollbar-hide`}>
+                        {
+                            newArrivalProducts.map(product => (
+                                <div key={product._id} className="min-w-[100%] sm:min-w-[50%] md:min-w-[50%] lg:min-w-[30%] relative">
+                                    <img src={product.images[0]?.url} alt={product.images[0]?.altText || product.name} className="w-full h-[500px] object-cover rounded-lg" draggable={false} />
+                                    <div className="absolute bottom-0 left-0 right-0 backdrop-blur-lg text-white p-4 rounded-b-lg">
+                                        <Link to={`/product/${product._id}`} className="block">
+                                            <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
+                                            <p className="text-sm font-bold text-white">${product.price.toFixed(2)}</p>
+                                        </Link>
+                                    </div>
 
-                            </div>
-                        ))
-                    }
-                </div>
+                                </div>
+                            ))
+                        }
+                    </div>
             </section>
         </>
     );

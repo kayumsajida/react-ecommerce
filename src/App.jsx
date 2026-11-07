@@ -4,6 +4,7 @@ import { Router } from 'react-router-dom'
 import UserLayout from './components/Layout/UserLayout'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
+import { Toaster } from 'sonner'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -11,6 +12,7 @@ function App() {
   return (
     <>
     <BrowserRouter>
+    <Toaster position="top-right" />
       <Routes>
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Home />} />

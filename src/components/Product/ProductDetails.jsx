@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+
 const selectedProduct = {
     name: "Stylist Jacket",
     price: 120,
@@ -21,6 +24,34 @@ const selectedProduct = {
 
 
 const ProductDetails = () => {
+
+    const [mainproduct, setMainProduct] = useState("");
+    const [selectedSize, setSelectedSize] = useState("");
+    const [selectedColor, setSelectedColor] = useState("");
+    const [quantity, setQuantity] = useState(1);
+    const [isbuttonDisabled, setIsButtonDisabled] = useState(false);
+
+    useEffect(() => {
+        if(selectedProduct && selectedProduct.images && selectedProduct.images.length > 0) {
+            setMainProduct(selectedProduct.images[0].url);
+        }
+    }, [selectedProduct])
+
+    const handleQuantityChange = (action) => {
+        if(action === "Plus") {
+            setQuantity(prevQuantity => prevQuantity + 1);
+        } else if(action === "Minus" && quantity > 1) {
+            setQuantity(prevQuantity => prevQuantity - 1);
+        }
+    };
+
+    const handleAddToCart = () => {
+        if(!selectedSize || !selectedColor) {
+            toast.error("Please select a size and color before adding to cart.");
+            return;
+        }
+    }
+
   return (
     <>
       <section className="py-10">
@@ -29,19 +60,19 @@ const ProductDetails = () => {
                 <div className="hidden md:flex flex-col space-y-4 mr-4">
                     {/* Left Thumbnails */}
                     {selectedProduct.images.map((image, index) => (
-                        <img key={index} src={image.url} className="h-20 w-20 object-cover cursor-pointer rounded-lg" alt={image.altText || `Thumbnail ${index}`} />
+                        <img key={index} src={image.url} onClick={() => setMainProduct(image.url)} className={`h-20 w-20 object-cover cursor-pointer rounded-lg ${mainproduct === image.url ? 'border border-gray-300' : ''}`} alt={image.altText || `Thumbnail ${index}`} />
                     ))}                    
                 </div>
                 {/* main product image */}
                 <div className="md:w-1/2">
                     <div className="mb-4">
-                        <img src={selectedProduct.images[0].url} className="w-full h-auto object-cover rounded-lg" alt="Main Product" />
+                        <img src={mainproduct} className="w-full h-auto object-cover rounded-lg" alt="Main Product" />
                     </div>
                 </div>
                 <div className="md:hidden flex overflow-x-auto space-x-4 mb-4">
                     {/* Left Thumbnails */}
                     {selectedProduct.images.map((image, index) => (
-                        <img key={index} src={image.url} className="h-20 w-20 object-cover cursor-pointer rounded-lg border" alt={image.altText || `Thumbnail ${index}`} />
+                        <img key={index} src={image.url} onClick={() => setMainProduct(image.url)} className={`h-20 w-20 object-cover cursor-pointer rounded-lg ${mainproduct === image.url ? 'border border-gray-300' : ''}`} alt={image.altText || `Thumbnail ${index}`} />
                     ))}                    
                 </div>
                 <div className="md:w-1/2 md:ml-6">
@@ -53,7 +84,7 @@ const ProductDetails = () => {
                         <p className="text-gray-600 mb-2">Colors:</p>
                         <div className="flex gap-2">
                             {selectedProduct.colors.map((color, index) => (
-                                <div key={index} className="w-8 h-8 rounded-full border cursor-pointer" style={{ backgroundColor: color.toLocaleLowerCase(), filter: "brightness(0.8)", }}></div>
+                                <button key={index} onClick={() => setSelectedColor(color)} className={`w-8 h-8 rounded-full border cursor-pointer ${selectedColor === color ? "border border-black" : 'border border-gray-300'}`} style={{ backgroundColor: color.toLocaleLowerCase(), filter: "brightness(0.8)", }}></button>
                             ))}
                         </div>
                     </div>
@@ -61,19 +92,19 @@ const ProductDetails = () => {
                         <p className="text-gray-700 mb-2">Size:</p>
                         <div className="flex gap-2">
                             {selectedProduct.sizes.map((size, index) => (
-                                <button key={index} className="w-8 h-8 items-center text-sm border rounded cursor-pointer">{size}</button>
+                                <button key={index} onClick={() => setSelectedSize(size)} className={`w-8 h-8 items-center text-sm border rounded cursor-pointer ${selectedSize === size ? 'bg-black text-white' : ''}`}>{size}</button>
                             ))}
                         </div>
                     </div>
                     <div className="mb-4">
                         <p className="text-gray-700 mb-2">Quantity:</p>
                         <div className="flex gap-2">
-                            <button className="px-2 w-8 items-center text-lg border border-gray-300 bg-gray-200 rounded cursor-pointer">-</button>
-                            <span className="px-2 w-8 items-center flex justify-center">1</span>
-                            <button className="px-2 w-8 items-center text-lg border border-gray-300 bg-gray-200 rounded cursor-pointer">+</button>
+                            <button onClick={() => handleQuantityChange("Minus")} className="px-2 w-8 items-center text-lg border border-gray-300 bg-gray-200 rounded cursor-pointer">-</button>
+                            <span className="px-2 w-8 items-center flex justify-center">{quantity}</span>
+                            <button onClick={() => handleQuantityChange("Plus")} className="px-2 w-8 items-center text-lg border border-gray-300 bg-gray-200 rounded cursor-pointer">+</button>
                         </div>
                     </div>
-                    <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-700 transition w-full cursor-pointer uppercase">Add to Cart</button>
+                    <button onClick={handleAddToCart} className="bg-black text-white px-4 py-2 rounded hover:bg-gray-700 transition w-full cursor-pointer uppercase">Add to Cart</button>
 
                     <div className="mt-4">
                         <p className="text-gray-700 mb-2">Characteristics:</p>

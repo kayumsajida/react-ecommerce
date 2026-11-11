@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { CiFilter } from "react-icons/ci";
 import FilterSidebar from "../components/Product/FilterSidebar";
+import ProductGrid from "../components/Product/ProductGrid";
 
 const CoolectionPage = () => {
     const [products, setProducts] = useState([]);
@@ -122,14 +123,19 @@ const CoolectionPage = () => {
     }, []);
     return (
         <>
-            <div className="flex flex-col lg:flex-flex-row">
+            <div className="flex flex-col lg:flex-row">
                 {/* Mobile Filter button */}
                 <button className="lg:hidden flex items-center justify-center cursor-pointer p-2" onClick={handleSidebarOpen}>
                     <CiFilter /> Filter
                 </button>
                 {/* filter sidebar */}
-                <div ref={sidebarRef} className={`${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} w-60 bg-white shadow-md fixed top-0 z-20 overflow-y-auto transition-transform duration-300 lg:static`}>
+                <div ref={sidebarRef} className={`${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} w-60 bg-white shadow-md fixed top-0 z-20 overflow-y-auto transition-transform duration-300 lg:static lg:translate-x-0`}>
                     <FilterSidebar />
+                </div>
+                <div className="flex-row p-4">
+                    <h2 className="text-2xl md:text-2xl font-semibold text-gray-800 mb-3">All Collection</h2>
+                    
+                    <ProductGrid products={products} />
                 </div>
             </div>
         </>

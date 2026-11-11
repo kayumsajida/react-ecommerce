@@ -27,10 +27,10 @@ const Navbar = () => {
                     <Link to="/" className="text-2xl uppercase"><span className="font-bold">Ecommerce</span></Link>
                 </div>
                 <div className="hidden md:flex space-x-4">
-                    <Link to="/" className="text-gray-700 hover:text-black duration-300 uppercase font-medium text-sm">Men</Link>
-                    <Link to="/" className="text-gray-700 hover:text-black duration-300 uppercase font-medium text-sm">Women</Link>
-                    <Link to="/" className="text-gray-700 hover:text-black duration-300 uppercase font-medium text-sm">Top Wear</Link>
-                    <Link to="/" className="text-gray-700 hover:text-black duration-300 uppercase font-medium text-sm">Bottom Wear</Link>
+                    <Link to="collection/all" className="text-gray-700 hover:text-black duration-300 uppercase font-medium text-sm">Men</Link>
+                    <Link to="collection/women" className="text-gray-700 hover:text-black duration-300 uppercase font-medium text-sm">Women</Link>
+                    <Link to="collection/top-wear" className="text-gray-700 hover:text-black duration-300 uppercase font-medium text-sm">Top Wear</Link>
+                    <Link to="collection/bottom-wear" className="text-gray-700 hover:text-black duration-300 uppercase font-medium text-sm">Bottom Wear</Link>
                 </div>
                 <div className="flex items-center gap-3">
                     <Link to="/profile" className="hover:text-black">

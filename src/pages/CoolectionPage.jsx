@@ -129,14 +129,15 @@ const CoolectionPage = () => {
                     <CiFilter /> Filter
                 </button>
                 {/* filter sidebar */}
-                <div ref={sidebarRef} className={`${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} w-60 bg-white shadow-md fixed top-0 z-20 overflow-y-auto transition-transform duration-300 lg:static lg:translate-x-0`}>
+                <div ref={sidebarRef} className={`${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} w-50 bg-white shadow-md fixed top-0 z-20 overflow-y-auto transition-transform duration-300 lg:static lg:translate-x-0`}>
                     <FilterSidebar />
                 </div>
                 <div className="flex-row p-4">
                     <h2 className="text-2xl md:text-2xl font-semibold text-gray-800 mb-3">All Collection</h2>
-                    
+
                     <ProductGrid products={products} />
                 </div>
+
             </div>
         </>
     );
